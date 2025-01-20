@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mailer BIT</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(45deg, rgba(106, 17, 203, 0.8), rgba(37, 117, 252, 0.8)), 
+                        url('file:///C:/Users/HP/Downloads/BIT.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+        }
+        header {
+            background-color: #444;
+            padding: 15px 0;
+            text-align: center;
+            color: white;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #555;
+            padding: 10px;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .hidden {
+            display: none;
+        }
+        .section {
+            background-color: #fff;
+            color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #2575fc;
+        }
+        label, input, select, textarea {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+        }
+        input, select, textarea {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #2575fc;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #6a11cb;
+        }
+        .dashboard {
+            display: flex;
+            justify-content: space-around;
+        }
+        .card {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            width: 30%;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+        .card h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .card p {
+            color: #666;
+        }
+        .logout-button {
+            margin-top: 20px;
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Schedule Management System</h1>
+</header>
+
+<nav>
+    <a href="#" onclick="showSection('loginSection')">Login</a>
+</nav>
+
+<div class="container">
+    <!-- Login Section -->
+    <div id="loginSection" class="section">
+        <h2>Login</h2>
+        <label for="username">Username:</label>
+        <input type="text" id="username" placeholder="Enter your username (e.g. user@bitsathy.ac.in)" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" placeholder="Enter password" required>
+
+        <button onclick="login()">Login</button>
+        <p id="loginMessage" style="color:red;"></p>
+    </div>
+
+    <!-- Student Section -->
+    <div id="studentSection" class="section hidden">
+        <h2>Student Dashboard</h2>
+        <div class="dashboard">
+            <div class="card">
+                <h3>Schedule date and timings</h3>
+                <ul id="studentSchedule">
+                    <!-- Combined schedule: date, time, and message content -->
+                </ul>
+                <button onclick="downloadSchedule()">Download Schedule</button>
+            </div>
+            <div class="card">
+                <h3>Announcements</h3>
+                <ul id="studentAnnouncements">
+                    <!-- Announcements updated from faculty input -->
+                </ul>
+            </div>
+        </div>
+        <button class="logout-button" onclick="logout()">Logout</button>
+    </div>
+
+    <!-- Faculty Section -->
+    <div id="facultySection" class="section hidden">
+        <h2>Faculty: Mail Request Form</h2>
+        <form id="mailRequestForm">
+            <label for="toEmail">To:</label>
+            <input type="email" id="toEmail" placeholder="Recipient's email" required>
+
+            <label for="fromDate">From Date:</label>
+            <input type="date" id="fromDate" required>
+
+            <label for="fromTime">From Time:</label>
+            <input type="time" id="fromTime" required>
+
+            <label for="toDate">To Date:</label>
+            <input type="date" id="toDate" required>
+
+            <label for="toTime">To Time:</label>
+            <input type="time" id="toTime" required>
+
+            <label for="emailCategory">Category:</label>
+            <select id="emailCategory" required>
+                <option value="academics">Academics</option>
+                <option value="training and placement">Training and Placement</option>
+                <option value="dayskill">Dayskill</option>
+                <option value="gurugulam">Gurugulam</option>
+                <option value="special lab">Special Lab</option>
+                <option value="workshop">Workshop</option>
+                <option value="pt">PT</option>
+            </select>
+
+            <label for="venue">Venue:</label>
+            <select id="venue" required>
+                <option value="ECE SEMHALL">ECE SEMHALL</option>
+                <option value="BIOTECH SEM HALL">BIOTECH SEM HALL</option>
+                <option value="MAIN AUDITORIUM">MAIN AUDITORIUM</option>
+                <option value="EEE SEMHALL">EEE SEMHALL</option>
+                <option value="SF SEMHALL 1">SF SEMHALL 1</option>
+                <option value="SF SEMHALL 2">SF SEMHALL 2</option>
+            </select>
+
+            <label for="requirements">Additional Requirements:</label>
+            <div>
+                <input type="checkbox" id="ac"> AC
+                <input type="checkbox" id="projector"> Projector
+                <input type="checkbox" id="wifi"> Wi-Fi
+            </div>
+
+            <label for="emailContent">Email Content:</label>
+            <textarea id="emailContent" rows="4" placeholder="Enter email content here..." required></textarea>
+
+            <button type="button" onclick="submitMailRequest()">Submit</button>
+        </form>
+        <p id="mailStatus" style="color:green;"></p>
+        <button class="logout-button" onclick="logout()">Logout</button>
+    </div>
+
+    <!-- Admin Section -->
+    <div id="adminSection" class="section hidden">
+        <h2>Admin Staff: Set Conflict Date</h2>
+        <p>Set a specific date where no faculty is allowed to schedule mail without admin approval.</p>
+
+        <label for="conflictFromDate">From Date:</label>
+        <input type="date" id="conflictFromDate">
+
+        <label for="conflictFromTime">From Time:</label>
+        <input type="time" id="conflictFromTime">
+
+        <label for="conflictToDate">To Date:</label>
+        <input type="date" id="conflictToDate">
+
+        <label for="conflictToTime">To Time:</label>
+        <input type="time" id="conflictToTime">
+
+        <label for="eventDescription">Event Description:</label>
+        <textarea id="eventDescription" placeholder="Enter the event or reason for the conflict date..." rows="3"></textarea>
+
+        <label for="venue">Venue:</label>
+        <select id="adminVenue" required>
+            <option value="ECE SEMHALL">ECE SEMHALL</option>
+            <option value="BIOTECH SEM HALL">BIOTECH SEM HALL</option>
+            <option value="MAIN AUDITORIUM">MAIN AUDITORIUM</option>
+            <option value="EEE SEMHALL">EEE SEMHALL</option>
+            <option value="SF SEMHALL 1">SF SEMHALL 1</option>
+            <option value="SF SEMHALL 2">SF SEMHALL 2</option>
+        </select>
+
+        <button onclick="setConflictDate()">Set Event Date</button>
+
+        <p id="adminMessage" style="color: green;"></p>
+
+        <button class="logout-button" onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<script>
+    let adminConflictDate = null;
+    let adminConflictTime = null;
+    let adminVenue = '';
+
+    function setConflictDate() {
+        const conflictFromDate = document.getElementById('conflictFromDate').value;
+        const conflictFromTime = document.getElementById('conflictFromTime').value;
+        const conflictToDate = document.getElementById('conflictToDate').value;
+        const conflictToTime = document.getElementById('conflictToTime').value;
+        const eventDescription = document.getElementById('eventDescription').value;
+        const venue = document.getElementById('adminVenue').value;
+
+        adminConflictDate = conflictFromDate;
+        adminConflictTime = conflictFromTime;
+        adminVenue = venue;
+
+        document.getElementById('adminMessage').textContent = `Conflict set for ${conflictFromDate} from ${conflictFromTime} to ${conflictToTime}. Event: ${eventDescription} at ${venue}`;
+    }
+
+    function submitMailRequest() {
+    const fromDate = document.getElementById('fromDate').value;
+    const fromTime = document.getElementById('fromTime').value;
+    const toDate = document.getElementById('toDate').value;
+    const toTime = document.getElementById('toTime').value;
+    const emailCategory = document.getElementById('emailCategory').value;
+    const venue = document.getElementById('venue').value;
+    const emailContent = document.getElementById('emailContent').value;
+
+    if (!fromDate || !fromTime || !toDate || !toTime || !emailCategory || !venue || !emailContent) {
+        alert('Please fill in all required fields.');
+        return;
+    }
+
+    // Check for conflicts with admin-defined dates
+    if (isConflictWithAdminSchedule(fromDate, fromTime, toDate, toTime)) {
+        return; // Conflict detected; no further processing
+    }
+
+    // No conflicts; process the mail request
+    document.getElementById('mailStatus').textContent = 'Mail submitted successfully!';
+    alert('Mail submitted successfully!');
+
+    // Update student schedule and announcements
+    updateStudentSchedule(fromDate, fromTime, toDate, toTime, emailCategory, venue);
+    updateStudentAnnouncements(emailCategory, emailContent, venue);
+}
+function downloadSchedule() {
+    const scheduleList = document.getElementById('studentSchedule');
+    const listItems = scheduleList.getElementsByTagName('li');
+
+    if (listItems.length === 0) {
+        alert('No schedule available to download!');
+        return;
+    }
+
+    let content = "Student Schedule:\n\n";
+    for (let i = 0; i < listItems.length; i++) {
+        content += `${i + 1}. ${listItems[i].textContent}\n`;
+    }
+
+    // Create a Blob with the content
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+
+    // Create a temporary link element
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Student_Schedule.txt';
+
+    // Trigger the download
+    a.click();
+
+    // Clean up the object URL
+    URL.revokeObjectURL(url);
+}
+
+
+
+function isConflictWithAdminSchedule(fromDate, fromTime, toDate, toTime) {
+    if (!adminConflictDate || !adminConflictTime) {
+        return false; // No conflict dates set by admin
+    }
+
+    const adminFromDate = new Date(`${adminConflictDate}T${adminConflictTime}`);
+    const adminToDate = new Date(`${document.getElementById('conflictToDate').value}T${document.getElementById('conflictToTime').value}`);
+    const facultyFromDate = new Date(`${fromDate}T${fromTime}`);
+    const facultyToDate = new Date(`${toDate}T${toTime}`);
+
+    const isConflict =
+        (facultyFromDate >= adminFromDate && facultyFromDate <= adminToDate) ||
+        (facultyToDate >= adminFromDate && facultyToDate <= adminToDate) ||
+        (facultyFromDate <= adminFromDate && facultyToDate >= adminToDate);
+
+    if (isConflict) {
+        const message = `Conflict detected! Admin has scheduled an event from ${adminFromDate.toLocaleString()} to ${adminToDate.toLocaleString()}. Please reschedule.`;
+        alert(message);
+        return true;
+    }
+
+    return false;
+}
+
+function updateStudentSchedule(fromDate, fromTime, toDate, toTime, eventDescription, venue) {
+    const scheduleList = document.getElementById('studentSchedule');
+    const listItem = document.createElement('li');
+    listItem.textContent = `${eventDescription} scheduled from ${fromDate} ${fromTime} to ${toDate} ${toTime} at ${venue}`;
+    scheduleList.appendChild(listItem);
+}
+function updateStudentAnnouncements(category, content, venue) {
+    const announcementsList = document.getElementById('studentAnnouncements');
+    const listItem = document.createElement('li');
+    listItem.textContent = `Announcement: ${category} at ${venue} - ${content}`;
+    announcementsList.appendChild(listItem);
+}
+
+
+    function login() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const loginMessage = document.getElementById('loginMessage');
+        
+        if (username === 'student@bitsathy.ac.in' && password === '123') {
+            showSection('studentSection');
+        } else if (username === 'faculty@bitsathy.ac.in' && password === '456') {
+            showSection('facultySection');
+        } else if (username === 'admin@bitsathy.ac.in' && password === '789') {
+            showSection('adminSection');
+        } else {
+            loginMessage.textContent = 'Invalid username or password';
+        }
+    }
+
+    function logout() {
+        document.getElementById('username').value = '';
+        document.getElementById('password').value = '';
+        showSection('loginSection');
+    }
+
+    function showSection(sectionId) {
+        document.querySelectorAll('.section').forEach(section => {
+            section.classList.add('hidden');
+        });
+        document.getElementById(sectionId).classList.remove('hidden');
+    }
+</script>
+
+</body>
+</html>
